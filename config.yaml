@@ -1,0 +1,35 @@
+seed: 42
+device: cuda
+
+data:
+  root: data
+  img_size: 224
+  num_workers: 0
+
+model:
+  name: dinov3_fusion
+  main_backbone: resnet18
+  main_pretrained: false
+  num_classes: 2
+
+  dino:
+    arch: dinov3_vits16
+    repo_dir: weights/dinov3/DINOv3
+    weight_path: weights/dinov3/dinov3_vits16.pth
+    source: local
+    freeze: true
+    feature_type: cls
+    feature_dim: 384
+
+  fusion:
+    type: concat
+    hidden_dim: 256
+    dropout: 0.3
+
+train:
+  epochs: 2
+  batch_size: 2
+  lr: 0.0001
+  weight_decay: 0.05
+  amp: true
+  output_dir: checkpoints
